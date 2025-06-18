@@ -1,5 +1,4 @@
 # Todo
 
--[] configure edge case for middleware
--[] complete simple login form
+-[x] configure edge case for middleware -[x] complete simple login form
 -[] UI design for dashboard

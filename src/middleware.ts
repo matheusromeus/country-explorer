@@ -18,11 +18,15 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
-  //todo: if user is authenticated and tries to access login page, redirect to dashboard
+  // if the user is authenticated and tries to access login page, redirect to dashboard
+  if (isAuthenticated && pathname === "/login") {
+    const dashboardUrl = new URL("/", request.url);
+    return NextResponse.redirect(dashboardUrl);
+  }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/favorites", "/country/:path*"],
+  matcher: ["/favorites", "/country/:path*", "/login"],
 };
