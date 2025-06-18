@@ -12,6 +12,7 @@ const Countries = async () => {
       {countries.map((country) => (
         <Link
           key={country.cca2}
+          prefetch={true}
           href={`/country/${country.cca2}`}
           className="flex items-center gap-2 hover:underline p-2 rounded-md"
         >
