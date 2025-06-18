@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState, startTransition } from "react";
 import { useRouter } from "next/navigation";
 
 // @ts-ignore
@@ -22,6 +22,7 @@ type CountryFeature = {
 
 export default function EarthPage() {
   const router = useRouter();
+  const globeRef = useRef<any>(null);
   const [features, setFeatures] = useState<CountryFeature[]>([]);
 
   useEffect(() => {
@@ -51,6 +52,7 @@ export default function EarthPage() {
   return (
     <div style={{ width: "100vw", height: "100vh", margin: 0 }}>
       <Globe
+        ref={globeRef}
         globeImageUrl="https://cdn.jsdelivr.net/npm/three-globe/example/img/earth-day.jpg"
         pointsData={features}
         pointLat={(d: any) => d.geometry.coordinates[1]}
@@ -64,8 +66,28 @@ export default function EarthPage() {
     </div>
   `}
         onPointClick={(d: any) => {
-          if (d?.properties?.ISO_A2) {
-            router.push(`/country/${d.properties.ISO_A2}`);
+          if (d?.geometry?.coordinates) {
+            const cameraState = globeRef.current.pointOfView();
+            globeRef.current.pointOfView(
+              {
+                lat: d.geometry.coordinates[1],
+                lng: d.geometry.coordinates[0],
+                altitude: 1.5,
+              },
+              1500
+            );
+            setTimeout(() => {
+              startTransition(() => {
+                const params = new URLSearchParams({
+                  lat: cameraState.lat,
+                  lng: cameraState.lng,
+                  altitude: cameraState.altitude,
+                });
+                router.push(
+                  `/country/${d.properties.ISO_A2}?${params.toString()}`
+                );
+              });
+            }, 1600);
           }
         }}
       />
