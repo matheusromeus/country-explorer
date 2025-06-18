@@ -1,5 +1,6 @@
 import Link from "next/link";
 import LogoutButton from "@/components/buttons/logout";
+import ToggleTheme from "@/components/buttons/toggle-theme";
 
 export default function Home() {
   return (
@@ -9,6 +10,8 @@ export default function Home() {
         <Link href="/favorites">Favorites</Link>
 
         <Link href="/country/123">Country</Link>
+
+        <ToggleTheme />
 
         {/* should not be visible if user is not authenticated */}
         <LogoutButton />
