@@ -6,6 +6,10 @@ import { loginSchema, LoginSchema } from "@/lib/schema";
 import { useSetAtom } from "jotai";
 import { syncAuthCookieAtom } from "@/atoms/authAtoms";
 import { useRouter } from "next/navigation";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
 
 export default function LoginForm() {
   const setAuth = useSetAtom(syncAuthCookieAtom);
@@ -24,6 +28,7 @@ export default function LoginForm() {
     if (data.username === "admin" && data.password === "admin12345") {
       setAuth(true);
       router.push("/");
+      toast.success("Welcome to Country Explorer!");
     } else {
       setError("username", { message: "Invalid credentials" });
       setError("password", { message: "Invalid credentials" });
@@ -31,15 +36,13 @@ export default function LoginForm() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="space-y-4 max-w-sm mx-auto p-4"
-    >
-      <div>
-        <label htmlFor="username">Username</label>
-        <input
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
+      <div className="grid gap-3">
+        <Label htmlFor="username">Username</Label>
+        <Input
           id="username"
           {...register("username")}
+          placeholder="admin"
           className="w-full p-2 border rounded"
         />
         {errors.username && (
@@ -47,12 +50,14 @@ export default function LoginForm() {
         )}
       </div>
 
-      <div>
-        <label htmlFor="password">Password</label>
-        <input
+      <div className="grid gap-3">
+        <Label htmlFor="password">Password</Label>
+        <Input
+          autoComplete="off"
           id="password"
           type="password"
           {...register("password")}
+          placeholder="admin12345"
           className="w-full p-2 border rounded"
         />
         {errors.password && (
@@ -60,9 +65,9 @@ export default function LoginForm() {
         )}
       </div>
 
-      <button type="submit" className="w-full bg-black text-white py-2 rounded">
+      <Button type="submit" className="w-full cursor-pointer py-2">
         Login
-      </button>
+      </Button>
     </form>
   );
 }
