@@ -3,14 +3,23 @@
 import { motion } from "framer-motion";
 import { Heart } from "lucide-react";
 import { useFavorites } from "@/atoms/favoritesAtoms";
+import { useAtomValue } from "jotai";
+import { isAuthenticatedAtom } from "@/atoms/authAtoms";
+import { useRouter } from "next/navigation";
 
 export default function FavoriteButton({ code }: { code: string }) {
   const { isFavorite, toggleFavorite } = useFavorites();
-
+  const isAuthenticated = useAtomValue(isAuthenticatedAtom);
+  const router = useRouter();
   const handleLike = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     event.preventDefault();
-    toggleFavorite(code);
+
+    if (isAuthenticated) {
+      toggleFavorite(code);
+    } else {
+      router.push("/login");
+    }
   };
 
   return (
