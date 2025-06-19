@@ -1,6 +1,7 @@
 import { fetchCountryByCode, fetchBorderCountries } from "@/lib/dal";
 import { CountryDetail } from "@/types/countries";
 import Link from "next/link";
+import FavoriteButton from "@/components/buttons/favourite";
 
 type Props = { params: Promise<{ code: string }> };
 
@@ -41,6 +42,7 @@ export default async function CountryPage({ params }: Props) {
           </Link>
         ))}
       </div>
+      <FavoriteButton code={country.cca2} />
     </div>
   );
 }

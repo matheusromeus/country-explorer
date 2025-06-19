@@ -45,3 +45,20 @@ export const fetchBorderCountries = cache(async (codes: string[]) => {
 
   return res.json();
 });
+
+export const fetchCountriesByCodes = cache(async (codes: string[]) => {
+  const res = await fetch(
+    `https://restcountries.com/v3.1/alpha?codes=${codes.join(
+      ","
+    )}&fields=name,cca2`,
+    {
+      next: { revalidate: 86400 },
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch countries by codes");
+  }
+
+  return res.json();
+});

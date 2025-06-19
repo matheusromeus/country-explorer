@@ -3,6 +3,7 @@ import { Country } from "@/types/countries";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import FavoriteButton from "../buttons/favourite";
 
 const Countries = async () => {
   const countries: Country[] = await fetchCountries();
@@ -22,7 +23,9 @@ const Countries = async () => {
             width={20}
             height={20}
           />
+
           <h2>{country.name.common}</h2>
+          <FavoriteButton code={country.cca2} />
         </Link>
       ))}
     </div>
