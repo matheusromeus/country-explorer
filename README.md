@@ -1,6 +1,9 @@
 # Todo
 
--[x] configure edge case for middleware -[x] complete simple login form
+-[x] configure edge case for middleware
+-[] searching and filtering (strict client side)
 -[] implement useTransition in dark mode toggling
-
-ui doesn't need to be a dashboard, so we can go with something like a traveller's map. do more research on this.
+-[] UI Dashboard & responsiveness
+-[] loading skeletons
+-[] more robust form validation using zod & maybe react hook form
+-[]
