@@ -20,6 +20,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -56,8 +57,14 @@ export const columns: ColumnDef<Country>[] = [
             width={24}
             height={16}
             className="rounded-sm object-cover"
+            priority
           />
-          <span className="capitalize">{name.common}</span>
+          <Link
+            href={`/country/${country.cca2}`}
+            className="capitalize hover:text-blue-600 hover:underline transition-all"
+          >
+            {name.common}
+          </Link>
         </div>
       );
     },
