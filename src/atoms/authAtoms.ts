@@ -6,9 +6,18 @@ const cookieKey = "auth";
 export const isAuthenticatedAtom = atomWithStorage<boolean>(cookieKey, false);
 
 // sync cookie on login/logout
-export const syncAuthCookieAtom = atom(null, (get, set, value: boolean) => {
-  set(isAuthenticatedAtom, value);
-  if (typeof window !== "undefined") {
-    document.cookie = `${cookieKey}=${value}; path=/`;
+// derived atom
+export const syncAuthCookieAtom = atom(
+  null,
+  async (get, set, value: boolean) => {
+    set(isAuthenticatedAtom, value);
+
+    if (!value) {
+      try {
+        await fetch("/api/auth/logout", { method: "POST" });
+      } catch (error) {
+        console.error("Logout error:", error);
+      }
+    }
   }
-});
+);

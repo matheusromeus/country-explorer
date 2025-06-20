@@ -24,14 +24,30 @@ export default function LoginForm() {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = (data: LoginSchema) => {
-    if (data.username === "admin" && data.password === "admin12345") {
-      setAuth(true);
-      router.push("/");
-      toast.success("Welcome to Country Explorer!");
-    } else {
-      setError("username", { message: "Invalid credentials" });
-      setError("password", { message: "Invalid credentials" });
+  const onSubmit = async (data: LoginSchema) => {
+    try {
+      const response = await fetch("/api/auth", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setAuth(true);
+        router.push("/");
+        toast.success("Welcome to Country Explorer!");
+      } else {
+        setError("username", { message: "Invalid credentials" });
+        setError("password", { message: "Invalid credentials" });
+        toast.error("Invalid credentials");
+      }
+    } catch (error) {
+      toast.error("Authentication failed. Please try again.");
+      console.error("Auth error:", error);
     }
   };
 

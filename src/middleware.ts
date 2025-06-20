@@ -5,7 +5,8 @@ import type { NextRequest } from "next/server";
 const protectedRoutes = ["/favorites", "/country"];
 
 export function middleware(request: NextRequest) {
-  const isAuthenticated = request.cookies.get("auth")?.value === "true";
+  const authCookie = request.cookies.get("auth");
+  const isAuthenticated = authCookie?.value === "true";
   const pathname = request.nextUrl.pathname;
 
   const isProtected = protectedRoutes.some((route) =>
