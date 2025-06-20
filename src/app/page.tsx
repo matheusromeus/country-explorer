@@ -13,9 +13,12 @@ export default async function Home() {
           alt="boats in a lake"
           fill
           className="object-cover"
+          priority
+          placeholder="blur"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
         />
       </div>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div></div>}>
         <Countries />
       </Suspense>
       <Footer />
