@@ -7,6 +7,7 @@ import type { Country } from "@/types/countries";
 import Image from "next/image";
 import Link from "next/link";
 import Footer from "@/components/dashboard/footer";
+import { Loader2 } from "lucide-react";
 
 export default function FavoritesPage() {
   const { favorites } = useFavorites();
@@ -27,8 +28,11 @@ export default function FavoritesPage() {
 
   if (loading)
     return (
-      <div className="flex justify-center items-center min-h-screen text-lg text-gray-900 dark:text-gray-100">
-        Loading...
+      <div className="relative flex flex-col gap-4 justify-center items-center min-h-screen">
+        <Loader2 className="w-12 h-12 animate-spin" />
+        <p className="text-lg text-gray-900 dark:text-gray-100">
+          Loading your dream destinations...
+        </p>
       </div>
     );
 
