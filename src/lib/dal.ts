@@ -65,7 +65,7 @@ export const fetchCountriesByCodes = cache(async (codes: string[]) => {
     const res = await fetch(
       `https://restcountries.com/v3.1/alpha?codes=${codes.join(
         ","
-      )}&fields=name,cca2`,
+      )}&fields=name,cca2,flags`,
       {
         next: { revalidate: 86400 },
       }

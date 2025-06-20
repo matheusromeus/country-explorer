@@ -2,19 +2,21 @@
 
 import { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { Home, Plane, Heart } from "lucide-react";
+import { useTheme } from "next-themes";
+import { Home, Plane, Heart, Sun, Moon } from "lucide-react";
 import { commonCountryCodes } from "@/lib/constants";
 
 interface DynamicIslandProps {
   className?: string;
 }
 
-const iconSets = [[Home, Heart, Plane]];
+const iconSets = [[Home, Heart, Plane, "theme-toggle"]];
 
 export function DynamicIsland({ className = "" }: DynamicIslandProps) {
   const [currentIconSet, setCurrentIconSet] = useState(0);
   const router = useRouter();
   const pathname = usePathname();
+  const { theme, setTheme } = useTheme();
 
   const shouldHideIsland =
     pathname?.includes("/login") || pathname?.startsWith("/login");
@@ -39,9 +41,15 @@ export function DynamicIsland({ className = "" }: DynamicIslandProps) {
     } else if (Icon === Plane) {
       const randomCountryCode = getRandomCountryCode();
       router.push(`/country/${randomCountryCode}`);
+    } else if (Icon === "theme-toggle") {
+      setTheme(theme === "light" ? "dark" : "light");
     } else {
       setCurrentIconSet((prev) => (prev + 1) % iconSets.length);
     }
+  };
+
+  const getThemeIcon = () => {
+    return theme === "light" ? Moon : Sun;
   };
 
   const currentIcons = iconSets[currentIconSet];
@@ -69,24 +77,28 @@ export function DynamicIsland({ className = "" }: DynamicIslandProps) {
         `}
       >
         <div className="flex flex-row items-center justify-center gap-2 md:gap-4">
-          {currentIcons.map((Icon, index) => (
-            <button
-              key={`${currentIconSet}-${index}`}
-              onClick={() => handleIconClick(index, Icon)}
-              className={`
-                p-2 md:p-3 rounded-full
-                ${
-                  isIconActive(Icon)
-                    ? "bg-primary/30 border-primary/60 text-primary shadow-lg"
-                    : "bg-primary/10 hover:bg-primary/20 border border-primary/20 hover:border-primary/40 text-primary hover:text-primary/80 shadow-sm hover:shadow-md"
-                }
-                relative overflow-hidden cursor-pointer
-              `}
-            >
-              <Icon size={16} className="md:hidden" />
-              <Icon size={20} className="hidden md:block" />
-            </button>
-          ))}
+          {currentIcons.map((Icon, index) => {
+            const IconComponent =
+              Icon === "theme-toggle" ? getThemeIcon() : Icon;
+            return (
+              <button
+                key={`${currentIconSet}-${index}`}
+                onClick={() => handleIconClick(index, Icon)}
+                className={`
+                  p-2 md:p-3 rounded-full
+                  ${
+                    isIconActive(Icon)
+                      ? "bg-primary/30 border-primary/60 text-primary shadow-lg"
+                      : "bg-primary/10 hover:bg-primary/20 border border-primary/20 hover:border-primary/40 text-primary hover:text-primary/80 shadow-sm hover:shadow-md"
+                  }
+                  relative overflow-hidden cursor-pointer
+                `}
+              >
+                <IconComponent size={16} className="md:hidden" />
+                <IconComponent size={20} className="hidden md:block" />
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>
