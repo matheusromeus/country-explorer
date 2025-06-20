@@ -2,6 +2,9 @@
 
 A beautiful, responsive country explorer dashboard built with **Next.js App Router**, TypeScript, and Jotai. Users can browse countries, filter/search, view detailed information, and manage favorite countries.
 
+
+**Deployed Link** [https://country-explorer-weld-alpha.vercel.app/](https://country-explorer-weld-alpha.vercel.app/)
+
 ## How to set up the project locally
 
 1. Clone the repo and install it using `pnpm` package manager (use `npm install -g pnpm` to install it)
@@ -16,7 +19,7 @@ pnpm dev
 ```
 
 The app should now be running on http://localhost:3000
-**Or just visit** [https://country-explorer-weld-alpha.vercel.app/](https://country-explorer-weld-alpha.vercel.app/)
+
 
 ## Mock Login Credentials
 
