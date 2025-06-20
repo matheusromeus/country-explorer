@@ -32,7 +32,7 @@ export default function FavoritesPage() {
     );
 
   return (
-    <div className={`min-h-screen px-4  sm:px-6 lg:px-8 pt-12 sm:pt-16 `}>
+    <div className={`min-h-screen px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 `}>
       <h1 className="text-6xl sm:text-8xl md:text-9xl lg:text-[160px] xl:text-[240px] 2xl:text-[320px] font-bold mb-8 sm:mb-12 lg:mb-16 -translate-x-2 sm:-translate-x-4 lg:-translate-x-8 xl:-translate-x-12 2xl:-translate-x-20 overflow-hidden text-black dark:text-gray-100">
         FAVORITES
       </h1>

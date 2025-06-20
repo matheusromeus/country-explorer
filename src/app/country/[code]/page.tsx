@@ -10,95 +10,82 @@ export default async function CountryPage({ params }: Props) {
   const { code } = await params;
   const country: CountryDetail = await fetchCountryByCode(code);
 
-  let borderCountries: { cca2: string; name: { common: string } }[] = [];
+  let borderCountries: {
+    cca2: string;
+    name: { common: string };
+    flags: { svg: string };
+  }[] = [];
   if (country.borders?.length) {
     borderCountries = await fetchBorderCountries(country.borders);
   }
 
-  return (
-    // <div className="p-6 max-w-4xl mx-auto space-y-6">
-    //   <h1 className="text-3xl font-bold">{country.name.common}</h1>
-    //   <p className="text-lg">{country.region}</p>
-    //   <p className="text-lg">{country.subregion}</p>
-    //   <p className="text-lg">{country.capital}</p>
-    //   <p className="text-lg">{country.tld}</p>
-    //   <p className="text-lg">
-    //     {Object.values(country.currencies || {})
-    //       .map((c: { name: string }) => c.name)
-    //       .join(", ")}
-    //   </p>
-    //   <p className="text-lg">
-    //     {Object.values(country.languages || {}).join(", ")}
-    //   </p>
+  // Extract official native names
+  const nativeNames = country.name.nativeName
+    ? Object.values(country.name.nativeName)
+        .map((name: any) => name.official)
+        .filter(Boolean)
+    : [];
 
-    //   <div className="flex flex-wrap gap-2">
-    //     {borderCountries.map((border) => (
-    //       <Link
-    //         key={border.cca2}
-    //         prefetch={true}
-    //         href={`/country/${border.cca2}`}
-    //         className="bg-blue-500 text-white p-2 rounded-md"
-    //       >
-    //         {border.name.common}
-    //       </Link>
-    //     ))}
-    //   </div>
-    //   <FavoriteButton code={country.cca2} />
-    // </div>
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 dark:from-gray-900 dark:via-emerald-900 dark:to-teal-900">
-      {/* Navigation */}
-      <nav className="bg-white/30 dark:bg-gray-900/30 backdrop-blur-sm border-b border-white/20 p-6">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <Link
-            href="/"
-            className="flex items-center space-x-3 text-gray-800 dark:text-white hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
-          >
-            <span className="text-2xl">←</span>
-            <span className="font-medium">Back to Explorer</span>
-          </Link>
-          <div className="flex items-center space-x-4">
+  return (
+    <div className="min-h-screen relative bg-white dark:bg-background">
+      {/* Dynamic Island Glass Pane Navigation */}
+      {/* <div className=" max-w-4xl absolute top-6 left-1/2 transform -translate-x-1/2 z-50">
+        <nav className="bg-white/20 dark:bg-black/20 backdrop-blur-xl border border-white/20 dark:border-white/10 rounded-full px-6 py-3 shadow-2xl">
+          <div className="flex items-center justify-between space-x-8">
+            <Link
+              href="/"
+              className="flex items-center space-x-2 text-gray-800 dark:text-white hover:text-black dark:hover:text-gray-200 transition-all duration-200 hover:scale-105"
+            >
+              <span className="text-xl">←</span>
+              <span className="font-medium text-sm">Back</span>
+            </Link>
             <Link
               href="/favorites"
-              className="text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+              className="flex items-center space-x-2 text-gray-800 dark:text-white hover:text-black dark:hover:text-gray-200 transition-all duration-200 hover:scale-105"
             >
-              ✨ My Bucket List
+              <span className="text-sm">✨</span>
+              <span className="font-medium text-sm">Bucket List</span>
             </Link>
           </div>
-        </div>
-      </nav>
+        </nav>
+      </div> */}
 
-      <div className="max-w-7xl mx-auto px-6 py-12">
-        {/* Hero Section with Flag */}
+      <div className="max-w-7xl mx-auto px-6 py-24">
         <div className="relative mb-16">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Flag */}
             <div className="relative">
-              <div className="relative aspect-[3/2] rounded-3xl overflow-hidden shadow-2xl">
+              <div className="relative aspect-[3/2] rounded-3xl overflow-hidden shadow-lg">
                 <Image
                   src={country.flags.svg}
                   alt={`Flag of ${country.name.common}`}
                   fill
                   className="object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
-              </div>
-              {/* Favorite Button */}
-              <div className="absolute top-6 right-6 z-10">
-                <FavoriteButton code={country.cca2} />
               </div>
             </div>
 
-            {/* Country Info */}
             <div className="space-y-6">
               <div>
-                <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent">
+                <h1 className="text-5xl flex items-center gap-2 md:text-6xl font-bold mb-2 text-black dark:text-white">
                   {country.name.common}
+                  <div className="mt-3">
+                    <FavoriteButton code={country.cca2} />
+                  </div>
                 </h1>
-                {/* {getNativeName() && getNativeName() !== country.name.common && (
-                  <p className="text-xl text-gray-600 dark:text-gray-300 mb-2">
-                    {getNativeName()}
-                  </p>
-                )} */}
+                {nativeNames.length > 0 && (
+                  <div className="mb-6">
+                    <div className="flex flex-wrap gap-2">
+                      {nativeNames.map((name, index) => (
+                        <span
+                          key={index}
+                          className="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-3 py-1 rounded-full text-sm font-medium"
+                        >
+                          {name}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
                 <div className="flex items-center space-x-2 text-lg text-gray-600 dark:text-gray-300">
                   <span className="text-2xl">📍</span>
                   <span>{country.region}</span>
@@ -111,34 +98,29 @@ export default async function CountryPage({ params }: Props) {
                 </div>
               </div>
 
-              {/* Quick Stats */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-lg rounded-2xl p-4 border border-white/20">
-                  <div className="flex items-center space-x-3">
-                    <span className="text-2xl">👥</span>
-                    <div>
-                      <p className="text-sm text-gray-600 dark:text-gray-300">
-                        Population
-                      </p>
-                      <p className="text-lg font-semibold text-gray-800 dark:text-white">
-                        {country.population}
-                      </p>
-                    </div>
+                <div className="flex items-center space-x-3">
+                  <span className="text-2xl">👥</span>
+                  <div>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                      Population
+                    </p>
+                    <p className="text-lg font-semibold text-gray-800 dark:text-white">
+                      {country.population.toLocaleString()}
+                    </p>
                   </div>
                 </div>
 
                 {country.capital && country.capital.length > 0 && (
-                  <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-lg rounded-2xl p-4 border border-white/20">
-                    <div className="flex items-center space-x-3">
-                      <span className="text-2xl">🏛️</span>
-                      <div>
-                        <p className="text-sm text-gray-600 dark:text-gray-300">
-                          Capital
-                        </p>
-                        <p className="text-lg font-semibold text-gray-800 dark:text-white">
-                          {country.capital.join(", ")}
-                        </p>
-                      </div>
+                  <div className="flex items-center space-x-3">
+                    <span className="text-2xl">🏛️</span>
+                    <div>
+                      <p className="text-sm text-gray-600 dark:text-gray-300">
+                        Capital
+                      </p>
+                      <p className="text-lg font-semibold text-gray-800 dark:text-white">
+                        {country.capital.join(", ")}
+                      </p>
                     </div>
                   </div>
                 )}
@@ -147,13 +129,10 @@ export default async function CountryPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Detailed Information */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-          {/* Left Column */}
+        {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
           <div className="space-y-6">
-            {/* Languages */}
-            {/* {getLanguages().length > 0 && (
-              <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-lg rounded-3xl p-8 border border-white/20 shadow-lg">
+            {country.languages && (
+              <div className="bg-gray-50 dark:bg-gray-800 rounded-3xl p-8 border border-gray-200 dark:border-gray-700 shadow-lg">
                 <div className="flex items-center space-x-3 mb-4">
                   <span className="text-3xl">🗣️</span>
                   <h3 className="text-2xl font-bold text-gray-800 dark:text-white">
@@ -161,58 +140,43 @@ export default async function CountryPage({ params }: Props) {
                   </h3>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {getLanguages().map((language, index) => (
+                  {Object.values(country.languages).map((language) => (
                     <span
-                      key={index}
-                      className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-4 py-2 rounded-full text-sm font-medium"
+                      key={language}
+                      className="bg-black dark:bg-white text-white dark:text-black px-4 py-2 rounded-full text-sm font-medium"
                     >
                       {language}
                     </span>
                   ))}
                 </div>
               </div>
-            )} */}
-            {country.languages &&
-              Object.values(country.languages).map((language) => (
-                <div key={language}>
-                  <p>{language}</p>
-                </div>
-              ))}
+            )}
 
-            {/* Currencies */}
-            {/* {getCurrencies().length > 0 && (
-              <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-lg rounded-3xl p-8 border border-white/20 shadow-lg">
+            {country.currencies && (
+              <div className="bg-gray-50 dark:bg-gray-800 rounded-3xl p-8 border border-gray-200 dark:border-gray-700 shadow-lg">
                 <div className="flex items-center space-x-3 mb-4">
                   <span className="text-3xl">💰</span>
                   <h3 className="text-2xl font-bold text-gray-800 dark:text-white">
-                    Currency
+                    Currencies
                   </h3>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {getCurrencies().map((currency, index) => (
+                  {Object.values(country.currencies).map((currency) => (
                     <span
-                      key={index}
-                      className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-4 py-2 rounded-full text-sm font-medium"
+                      key={currency.name}
+                      className="bg-black dark:bg-white text-white dark:text-black px-4 py-2 rounded-full text-sm font-medium"
                     >
-                      {currency}
+                      {currency.name}
                     </span>
                   ))}
                 </div>
               </div>
-            )} */}
-            {country.currencies &&
-              Object.values(country.currencies).map((currency) => (
-                <div key={currency.name}>
-                  <p>{currency.name}</p>
-                </div>
-              ))}
+            )}
           </div>
 
-          {/* Right Column */}
           <div className="space-y-6">
-            {/* Top Level Domains */}
             {country.tld && country.tld.length > 0 && (
-              <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-lg rounded-3xl p-8 border border-white/20 shadow-lg">
+              <div className="bg-gray-50 dark:bg-gray-800 rounded-3xl p-8 border border-gray-200 dark:border-gray-700 shadow-lg">
                 <div className="flex items-center space-x-3 mb-4">
                   <span className="text-3xl">🌐</span>
                   <h3 className="text-2xl font-bold text-gray-800 dark:text-white">
@@ -223,7 +187,7 @@ export default async function CountryPage({ params }: Props) {
                   {country.tld.map((domain, index) => (
                     <span
                       key={index}
-                      className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full text-sm font-medium font-mono"
+                      className="bg-black dark:bg-white text-white dark:text-black px-4 py-2 rounded-full text-sm font-medium font-mono"
                     >
                       {domain}
                     </span>
@@ -232,8 +196,7 @@ export default async function CountryPage({ params }: Props) {
               </div>
             )}
 
-            {/* Additional Info Card */}
-            <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-lg rounded-3xl p-8 border border-white/20 shadow-lg">
+            <div className="bg-gray-50 dark:bg-gray-800 rounded-3xl p-8 border border-gray-200 dark:border-gray-700 shadow-lg">
               <div className="flex items-center space-x-3 mb-4">
                 <span className="text-3xl">📊</span>
                 <h3 className="text-2xl font-bold text-gray-800 dark:text-white">
@@ -264,7 +227,7 @@ export default async function CountryPage({ params }: Props) {
                     Population
                   </span>
                   <span className="font-semibold text-gray-800 dark:text-white">
-                    {country.population}
+                    {country.population.toLocaleString()}
                   </span>
                 </div>
               </div>
@@ -272,13 +235,12 @@ export default async function CountryPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Border Countries */}
         {borderCountries.length > 0 && (
-          <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-lg rounded-3xl p-8 border border-white/20 shadow-lg">
+          <div className="bg-gray-50 dark:bg-gray-800 rounded-3xl p-8 border border-gray-200 dark:border-gray-700 shadow-lg">
             <div className="flex items-center space-x-3 mb-6">
               <span className="text-3xl">🗺️</span>
               <h3 className="text-2xl font-bold text-gray-800 dark:text-white">
-                Neighboring Countries
+                Nearby Countries
               </h3>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
@@ -286,9 +248,15 @@ export default async function CountryPage({ params }: Props) {
                 <Link
                   key={border.cca2}
                   href={`/country/${border.cca2}`}
-                  className="group bg-gradient-to-br from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white p-4 rounded-2xl text-center transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                  className="group flex flex-col items-center gap-3 bg-black dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-200 text-white dark:text-black p-4 rounded-2xl text-center transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
                 >
-                  <div className="text-2xl mb-2">🏁</div>
+                  <Image
+                    src={border.flags.svg}
+                    alt={`Flag of ${border.name.common}`}
+                    width={50}
+                    height={50}
+                    className="object-cover"
+                  />
                   <div className="text-sm font-medium">
                     {border.name.common}
                   </div>
@@ -296,32 +264,7 @@ export default async function CountryPage({ params }: Props) {
               ))}
             </div>
           </div>
-        )}
-
-        {/* Call to Action */}
-        <div className="text-center mt-16">
-          <div className="bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 rounded-3xl p-8 text-white">
-            <h3 className="text-3xl font-bold mb-4">Plan Your Adventure</h3>
-            <p className="text-xl mb-6 text-emerald-100">
-              Ready to explore {country.name.common}? Start planning your
-              journey today!
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link
-                href="/favorites"
-                className="bg-white/20 hover:bg-white/30 text-white px-6 py-3 rounded-full font-medium transition-all duration-200 backdrop-blur-sm"
-              >
-                ✨ View My Bucket List
-              </Link>
-              <Link
-                href="/"
-                className="bg-white/20 hover:bg-white/30 text-white px-6 py-3 rounded-full font-medium transition-all duration-200 backdrop-blur-sm"
-              >
-                🌍 Explore More Countries
-              </Link>
-            </div>
-          </div>
-        </div>
+        )} */}
       </div>
     </div>
   );

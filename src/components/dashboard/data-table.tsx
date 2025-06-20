@@ -72,6 +72,7 @@ export const columns: ColumnDef<Country>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="-ml-3"
         >
           Region
           <ArrowUpDown />
@@ -79,7 +80,7 @@ export const columns: ColumnDef<Country>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("region")}</div>
+      <div className="capitalize">{row.getValue("region")}</div>
     ),
   },
   {
@@ -89,6 +90,7 @@ export const columns: ColumnDef<Country>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="-ml-3"
         >
           Population
           <ArrowUpDown />
@@ -98,24 +100,28 @@ export const columns: ColumnDef<Country>[] = [
     cell: ({ row }) => {
       const population = row.getValue("population") as number;
       const formatted = new Intl.NumberFormat("en-US").format(population);
-      return <div className="text-right font-medium">{formatted}</div>;
+      return <div className="text-left font-medium">{formatted}</div>;
     },
   },
   {
     accessorKey: "capital",
-    header: () => <div className="text-right">Capital</div>,
+    header: () => <div className="text-left">Capital</div>,
     cell: ({ row }) => {
       const capital = row.getValue("capital") as string[] | undefined;
-      return <div className="text-right">{capital?.[0] || "N/A"}</div>;
+      return <div className="text-left">{capital?.[0] || "N/A"}</div>;
     },
   },
   {
     id: "actions",
-    header: "Favorite",
+    header: () => <div className="text-center">Favorite</div>,
     enableHiding: false,
     cell: ({ row }) => {
       const country = row.original;
-      return <FavoriteButton code={country.cca2} />;
+      return (
+        <div className="flex justify-center">
+          <FavoriteButton code={country.cca2} />
+        </div>
+      );
     },
   },
 ];
@@ -166,7 +172,7 @@ export function DataTable({ countries }: { countries: Country[] }) {
   });
 
   return (
-    <div className="w-full p-10">
+    <div className="w-full p-5 border rounded-lg">
       <div className="flex items-center py-4 gap-4">
         <Input
           placeholder="Filter countries..."
@@ -202,7 +208,7 @@ export function DataTable({ countries }: { countries: Country[] }) {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border">
+      <div className="rounded-md">
         <div>
           <Table>
             <TableHeader className="sticky top-0 bg-background z-10">

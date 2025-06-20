@@ -28,7 +28,7 @@ export default function RootLayout({
           <DynamicIsland />
           {children}
           <div className="mt-auto">
-            <footer className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+            <footer className="bg-white backdrop-blur dark:bg-background">
               <div className="container mx-auto px-4 py-16">
                 <div className="flex flex-col sm:flex-row justify-between items-center gap-4"></div>
               </div>

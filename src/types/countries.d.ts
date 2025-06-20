@@ -22,14 +22,20 @@ export type CountryDetail = {
   };
   name: {
     common: string;
-    nativeName?: Record<string, { common: string }>;
+    nativeName?: Record<string, { official: string; common: string }>;
   };
   population: number;
   region: string;
   subregion?: string;
   capital?: string[];
   tld?: string[];
-  currencies?: Record<string, { name: string }>;
+  currencies?: Record<string, { name: string; symbol: string }>;
   languages?: Record<string, string>;
   borders?: string[];
+  idd: {
+    root: string;
+    suffixes: string[];
+  };
+  independent: boolean;
+  unMember: boolean;
 };
