@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { Home, Plane, Heart } from "lucide-react";
+import { commonCountryCodes } from "@/lib/constants";
 
 interface DynamicIslandProps {
   className?: string;
@@ -15,25 +16,36 @@ export function DynamicIsland({ className = "" }: DynamicIslandProps) {
   const router = useRouter();
   const pathname = usePathname();
 
-  // Hide dynamic island on auth/login routes
   const shouldHideIsland =
     pathname?.includes("/login") || pathname?.startsWith("/login");
 
+  const getRandomCountryCode = () => {
+    const randomIndex = Math.floor(Math.random() * commonCountryCodes.length);
+    return commonCountryCodes[randomIndex];
+  };
+
+  const isIconActive = (Icon: any) => {
+    if (Icon === Home && pathname === "/") return true;
+    if (Icon === Heart && pathname === "/favorites") return true;
+    if (Icon === Plane && pathname?.startsWith("/country")) return true;
+    return false;
+  };
+
   const handleIconClick = (index: number, Icon: any) => {
-    // Navigate to specific routes based on the icon
     if (Icon === Heart) {
       router.push("/favorites");
     } else if (Icon === Home) {
       router.push("/");
+    } else if (Icon === Plane) {
+      const randomCountryCode = getRandomCountryCode();
+      router.push(`/country/${randomCountryCode}`);
     } else {
-      // For other icons, cycle through different icon sets
       setCurrentIconSet((prev) => (prev + 1) % iconSets.length);
     }
   };
 
   const currentIcons = iconSets[currentIconSet];
 
-  // Don't render the dynamic island on login/auth pages
   if (shouldHideIsland) {
     return null;
   }
@@ -63,10 +75,11 @@ export function DynamicIsland({ className = "" }: DynamicIslandProps) {
               onClick={() => handleIconClick(index, Icon)}
               className={`
                 p-2 md:p-3 rounded-full
-                bg-primary/10 hover:bg-primary/20 
-                border border-primary/20 hover:border-primary/40
-                text-primary hover:text-primary/80
-                shadow-sm hover:shadow-md
+                ${
+                  isIconActive(Icon)
+                    ? "bg-primary/30 border-primary/60 text-primary shadow-lg"
+                    : "bg-primary/10 hover:bg-primary/20 border border-primary/20 hover:border-primary/40 text-primary hover:text-primary/80 shadow-sm hover:shadow-md"
+                }
                 relative overflow-hidden cursor-pointer
               `}
             >
