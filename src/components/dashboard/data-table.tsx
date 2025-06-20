@@ -203,7 +203,7 @@ export function DataTable({ countries }: { countries: Country[] }) {
         </DropdownMenu>
       </div>
       <div className="rounded-md border">
-        <div className="h-[600px] overflow-auto">
+        <div>
           <Table>
             <TableHeader className="sticky top-0 bg-background z-10">
               {table.getHeaderGroups().map((headerGroup) => (
