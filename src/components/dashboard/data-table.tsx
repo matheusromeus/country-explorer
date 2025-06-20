@@ -44,6 +44,7 @@ export const columns: ColumnDef<Country>[] = [
   {
     accessorKey: "name",
     header: "Country",
+    size: 250,
     cell: ({ row }) => {
       const name = row.getValue("name") as { common: string };
       const country = row.original;
@@ -79,6 +80,7 @@ export const columns: ColumnDef<Country>[] = [
         </Button>
       );
     },
+    size: 150,
     cell: ({ row }) => (
       <div className="capitalize">{row.getValue("region")}</div>
     ),
@@ -97,6 +99,7 @@ export const columns: ColumnDef<Country>[] = [
         </Button>
       );
     },
+    size: 150,
     cell: ({ row }) => {
       const population = row.getValue("population") as number;
       const formatted = new Intl.NumberFormat("en-US").format(population);
@@ -106,6 +109,7 @@ export const columns: ColumnDef<Country>[] = [
   {
     accessorKey: "capital",
     header: () => <div className="text-left">Capital</div>,
+    size: 150,
     cell: ({ row }) => {
       const capital = row.getValue("capital") as string[] | undefined;
       return <div className="text-left">{capital?.[0] || "N/A"}</div>;
@@ -115,6 +119,7 @@ export const columns: ColumnDef<Country>[] = [
     id: "actions",
     header: () => <div className="text-center">Favorite</div>,
     enableHiding: false,
+    size: 100,
     cell: ({ row }) => {
       const country = row.original;
       return (
@@ -163,6 +168,8 @@ export function DataTable({ countries }: { countries: Country[] }) {
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    enableColumnResizing: false,
+    columnResizeMode: "onChange",
     state: {
       sorting,
       columnFilters,
@@ -210,13 +217,18 @@ export function DataTable({ countries }: { countries: Country[] }) {
       </div>
       <div className="rounded-md">
         <div>
-          <Table>
+          <Table className="table-fixed w-full">
             <TableHeader className="sticky top-0 bg-background z-10">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
                     return (
-                      <TableHead key={header.id}>
+                      <TableHead
+                        key={header.id}
+                        style={{
+                          width: header.getSize(),
+                        }}
+                      >
                         {header.isPlaceholder
                           ? null
                           : flexRender(
@@ -237,7 +249,12 @@ export function DataTable({ countries }: { countries: Country[] }) {
                     data-state={row.getIsSelected() && "selected"}
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
+                      <TableCell
+                        key={cell.id}
+                        style={{
+                          width: cell.column.getSize(),
+                        }}
+                      >
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
