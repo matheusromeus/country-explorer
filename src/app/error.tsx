@@ -14,9 +14,11 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
+    <div className="flex flex-col gap-4 items-center justify-center h-screen">
       <h2>Something went wrong!</h2>
-      <button onClick={() => reset()}>Try again</button>
+      <button onClick={() => reset()} className="hover:underline">
+        Try again
+      </button>
     </div>
   );
 }
