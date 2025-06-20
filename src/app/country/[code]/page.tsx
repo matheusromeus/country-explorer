@@ -6,7 +6,7 @@ import Image from "next/image";
 import Footer from "@/components/dashboard/footer";
 import { Suspense } from "react";
 import BorderCountries from "@/components/country/BorderCountries";
-import BorderCountriesSkeleton from "@/components/country/BorderCountriesSkeleton";
+import BorderCountriesSkeleton from "@/components/skeletons/BorderCountriesSkeleton";
 
 type Props = { params: Promise<{ code: string }> };
 

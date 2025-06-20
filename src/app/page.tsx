@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Suspense } from "react";
 import Countries from "@/components/dashboard/countries";
 import Footer from "@/components/dashboard/footer";
+import DataTableSkeleton from "@/components/skeletons/DataTableSkeleton";
 
 export default async function Home() {
   return (
@@ -14,11 +15,11 @@ export default async function Home() {
           fill
           className="object-cover"
           priority
-          placeholder="blur"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
+          // placeholder="blur"
+          // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
         />
       </div>
-      <Suspense fallback={<div></div>}>
+      <Suspense fallback={<DataTableSkeleton />}>
         <Countries />
       </Suspense>
       <Footer />
