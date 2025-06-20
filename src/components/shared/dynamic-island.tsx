@@ -77,18 +77,16 @@ export function DynamicIsland({ className = "" }: DynamicIslandProps) {
   };
 
   const getIconColor = (Icon: LucideIcon | string) => {
-    if (Icon === Home) return "text-blue-500 hover:text-blue-600";
+    if (Icon === Home) return "";
     if (Icon === Heart) return "text-red-500 hover:text-red-600";
-    if (Icon === Plane) return "text-teal-500 hover:text-teal-600";
+    if (Icon === Plane) return "";
     if (Icon === "auth-toggle") {
       return isAuthenticated
-        ? "text-green-500 hover:text-green-600"
-        : "text-orange-500 hover:text-orange-600";
+        ? "bg-green-500 hover:bg-green-600"
+        : "bg-yellow-500 hover:bg-yellow-600";
     }
     if (Icon === "theme-toggle") {
-      return theme === "light"
-        ? "text-purple-500 hover:text-purple-600"
-        : "text-yellow-500 hover:text-yellow-600";
+      return theme === "light" ? "" : "";
     }
     return "text-primary hover:text-primary/80";
   };
@@ -125,14 +123,29 @@ export function DynamicIsland({ className = "" }: DynamicIslandProps) {
                 : Icon === "auth-toggle"
                 ? getAuthIcon()
                 : Icon;
+
+            const getTooltipText = () => {
+              if (Icon === "auth-toggle") {
+                return isAuthenticated
+                  ? "You are logged in"
+                  : "You are logged out";
+              }
+              return "";
+            };
+
             return (
               <button
                 key={`${currentIconSet}-${index}`}
                 onClick={() => handleIconClick(Icon)}
+                title={getTooltipText()}
                 className={`
                   p-2 md:p-3 rounded-full
                   ${
-                    isIconActive(Icon)
+                    Icon === "auth-toggle"
+                      ? `${getIconColor(
+                          Icon
+                        )} border border-primary/20 shadow-sm hover:shadow-md`
+                      : isIconActive(Icon)
                       ? `bg-primary/20 border-primary/40 shadow-lg ${getIconColor(
                           Icon
                         )}`
