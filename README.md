@@ -115,8 +115,8 @@ The rendering strategy used here is mainly ISR (Incremental Static Regeneration)
 
 **Improvements That Could Be Made**
 
-- No sessions implemented - cannot see past user data
-- Optimistic UI for favorites button
-- GitHub CI pipelines for commit linting
+- No sessions implemented - can see past user data
+- Optimistic UI for favorite button
+- GitHub CI pipelines for commit linting, and tests
 - Prettier config for standard code syntax styling
 - Authentication for data layer access calls
