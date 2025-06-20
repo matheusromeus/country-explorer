@@ -3,6 +3,7 @@ import { CountryDetail } from "@/types/countries";
 import Link from "next/link";
 import FavoriteButton from "@/components/buttons/favourite";
 import Image from "next/image";
+import Footer from "@/components/dashboard/footer";
 
 type Props = { params: Promise<{ code: string }> };
 
@@ -129,10 +130,10 @@ export default async function CountryPage({ params }: Props) {
           </div>
         </div>
 
-        {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
           <div className="space-y-6">
             {country.languages && (
-              <div className="bg-gray-50 dark:bg-gray-800 rounded-3xl p-8 border border-gray-200 dark:border-gray-700 shadow-lg">
+              <div className="bg-white/10 dark:bg-black/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20 dark:border-white/10 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:bg-white/20 dark:hover:bg-black/20">
                 <div className="flex items-center space-x-3 mb-4">
                   <span className="text-3xl">🗣️</span>
                   <h3 className="text-2xl font-bold text-gray-800 dark:text-white">
@@ -143,7 +144,7 @@ export default async function CountryPage({ params }: Props) {
                   {Object.values(country.languages).map((language) => (
                     <span
                       key={language}
-                      className="bg-black dark:bg-white text-white dark:text-black px-4 py-2 rounded-full text-sm font-medium"
+                      className="bg-black/80 dark:bg-white/90 backdrop-blur-md text-white dark:text-black px-4 py-2 rounded-full text-sm font-medium shadow-lg hover:bg-black dark:hover:bg-white transition-all duration-200"
                     >
                       {language}
                     </span>
@@ -153,7 +154,7 @@ export default async function CountryPage({ params }: Props) {
             )}
 
             {country.currencies && (
-              <div className="bg-gray-50 dark:bg-gray-800 rounded-3xl p-8 border border-gray-200 dark:border-gray-700 shadow-lg">
+              <div className="bg-white/10 dark:bg-black/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20 dark:border-white/10 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:bg-white/20 dark:hover:bg-black/20">
                 <div className="flex items-center space-x-3 mb-4">
                   <span className="text-3xl">💰</span>
                   <h3 className="text-2xl font-bold text-gray-800 dark:text-white">
@@ -164,7 +165,7 @@ export default async function CountryPage({ params }: Props) {
                   {Object.values(country.currencies).map((currency) => (
                     <span
                       key={currency.name}
-                      className="bg-black dark:bg-white text-white dark:text-black px-4 py-2 rounded-full text-sm font-medium"
+                      className="bg-black/80 dark:bg-white/90 backdrop-blur-md text-white dark:text-black px-4 py-2 rounded-full text-sm font-medium shadow-lg hover:bg-black dark:hover:bg-white transition-all duration-200"
                     >
                       {currency.name}
                     </span>
@@ -176,7 +177,7 @@ export default async function CountryPage({ params }: Props) {
 
           <div className="space-y-6">
             {country.tld && country.tld.length > 0 && (
-              <div className="bg-gray-50 dark:bg-gray-800 rounded-3xl p-8 border border-gray-200 dark:border-gray-700 shadow-lg">
+              <div className="bg-white/10 dark:bg-black/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20 dark:border-white/10 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:bg-white/20 dark:hover:bg-black/20">
                 <div className="flex items-center space-x-3 mb-4">
                   <span className="text-3xl">🌐</span>
                   <h3 className="text-2xl font-bold text-gray-800 dark:text-white">
@@ -187,7 +188,7 @@ export default async function CountryPage({ params }: Props) {
                   {country.tld.map((domain, index) => (
                     <span
                       key={index}
-                      className="bg-black dark:bg-white text-white dark:text-black px-4 py-2 rounded-full text-sm font-medium font-mono"
+                      className="bg-black/80 dark:bg-white/90 backdrop-blur-md text-white dark:text-black px-4 py-2 rounded-full text-sm font-medium font-mono shadow-lg hover:bg-black dark:hover:bg-white transition-all duration-200"
                     >
                       {domain}
                     </span>
@@ -196,7 +197,7 @@ export default async function CountryPage({ params }: Props) {
               </div>
             )}
 
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-3xl p-8 border border-gray-200 dark:border-gray-700 shadow-lg">
+            <div className="bg-white/10 dark:bg-black/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20 dark:border-white/10 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:bg-white/20 dark:hover:bg-black/20">
               <div className="flex items-center space-x-3 mb-4">
                 <span className="text-3xl">📊</span>
                 <h3 className="text-2xl font-bold text-gray-800 dark:text-white">
@@ -236,7 +237,7 @@ export default async function CountryPage({ params }: Props) {
         </div>
 
         {borderCountries.length > 0 && (
-          <div className="bg-gray-50 dark:bg-gray-800 rounded-3xl p-8 border border-gray-200 dark:border-gray-700 shadow-lg">
+          <div className="bg-white/10 dark:bg-black/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20 dark:border-white/10 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:bg-white/20 dark:hover:bg-black/20">
             <div className="flex items-center space-x-3 mb-6">
               <span className="text-3xl">🗺️</span>
               <h3 className="text-2xl font-bold text-gray-800 dark:text-white">
@@ -248,14 +249,14 @@ export default async function CountryPage({ params }: Props) {
                 <Link
                   key={border.cca2}
                   href={`/country/${border.cca2}`}
-                  className="group flex flex-col items-center gap-3 bg-black dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-200 text-white dark:text-black p-4 rounded-2xl text-center transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                  className="group flex flex-col items-center gap-3 bg-white/20 dark:bg-black/20 backdrop-blur-lg hover:bg-white/30 dark:hover:bg-black/30 text-black dark:text-white p-4 rounded-2xl text-center transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl border border-white/30 dark:border-white/20"
                 >
                   <Image
                     src={border.flags.svg}
                     alt={`Flag of ${border.name.common}`}
                     width={50}
                     height={50}
-                    className="object-cover"
+                    className="object-cover rounded-lg"
                   />
                   <div className="text-sm font-medium">
                     {border.name.common}
@@ -264,8 +265,9 @@ export default async function CountryPage({ params }: Props) {
               ))}
             </div>
           </div>
-        )} */}
+        )}
       </div>
+      <Footer />
     </div>
   );
 }

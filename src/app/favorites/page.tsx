@@ -6,6 +6,7 @@ import { fetchCountriesByCodes } from "@/lib/dal";
 import type { Country } from "@/types/countries";
 import Image from "next/image";
 import Link from "next/link";
+import Footer from "@/components/dashboard/footer";
 
 export default function FavoritesPage() {
   const { favorites } = useFavorites();
@@ -26,7 +27,7 @@ export default function FavoritesPage() {
 
   if (loading)
     return (
-      <div className="flex justify-center items-center min-h-screen text-lg text-gray-900 dark:text-gray-100 dark:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]">
+      <div className="flex justify-center items-center min-h-screen text-lg text-gray-900 dark:text-gray-100">
         Loading...
       </div>
     );
@@ -38,11 +39,11 @@ export default function FavoritesPage() {
       </h1>
       {countries.length === 0 ? (
         <div className="flex flex-col items-center justify-center text-center py-12 sm:py-16 lg:py-20">
-          <p className="text-xl sm:text-2xl text-gray-600 dark:text-gray-400 mb-4 dark:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]">
-            No favorite countries yet.
+          <p className="text-xl sm:text-2xl text-gray-600 dark:text-gray-400 mb-4">
+            Oh no! You don't have any favorite countries yet.
           </p>
-          <p className="text-base sm:text-lg text-gray-500 dark:text-gray-500 dark:drop-shadow-[0_0_6px_rgba(255,255,255,0.25)]">
-            Start exploring countries and add them to your favorites!
+          <p className="text-base sm:text-lg text-gray-500 dark:text-gray-500 ">
+            Start exploring countries and add them to your favorites! 🌍
           </p>
         </div>
       ) : (
@@ -70,6 +71,7 @@ export default function FavoritesPage() {
           </ul>
         </div>
       )}
+      <Footer />
     </div>
   );
 }

@@ -3,12 +3,13 @@ import Image from "next/image";
 
 import { Suspense } from "react";
 import Countries from "@/components/dashboard/countries";
+import Footer from "@/components/dashboard/footer";
 
 export default async function Home() {
   return (
     <>
       <div className="">
-        <div className="flex items-center gap-2 absolute top-0 right-0 p-5 z-50 cursor-pointer">
+        <div className="flex items-center gap-2 absolute top-0 right-0 p-5 z-50">
           <LogoutButton />
         </div>
       </div>
@@ -17,7 +18,7 @@ export default async function Home() {
           src="/assets/images/home.jpg"
           alt="minimalist globe"
           fill
-          className="object-cover opacity-30"
+          className="object-cover"
         />
         <div className="z-10">
           {/* <h1 className="text-4xl font-bold">Country Explorer</h1>
@@ -27,6 +28,7 @@ export default async function Home() {
       <Suspense fallback={<div>Loading...</div>}>
         <Countries />
       </Suspense>
+      <Footer />
     </>
   );
 }

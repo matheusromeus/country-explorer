@@ -12,7 +12,9 @@ const LogoutButton = () => {
   return (
     <div>
       {isAuthenticated ? (
-        <Button onClick={() => setAuth(false)}>Logout</Button>
+        <Button onClick={() => setAuth(false)} className="cursor-pointer">
+          Logout
+        </Button>
       ) : (
         <Link href="/login">Login</Link>
       )}
