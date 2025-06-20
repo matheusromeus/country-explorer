@@ -11,6 +11,7 @@ const Countries = async () => {
       </div>
     );
   } catch (error) {
+    console.error(error);
     return (
       <div className="h-screen flex items-center justify-center">
         Failed to load countries. Please try again later.
