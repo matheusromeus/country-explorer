@@ -3,20 +3,24 @@
 import { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
-import { Home, Plane, Heart, Sun, Moon } from "lucide-react";
+import { Home, Plane, Heart, Sun, Moon, Lock, Unlock } from "lucide-react";
+import { useAtomValue, useSetAtom } from "jotai";
+import { isAuthenticatedAtom, syncAuthCookieAtom } from "@/atoms/authAtoms";
 import { commonCountryCodes } from "@/lib/constants";
 
 interface DynamicIslandProps {
   className?: string;
 }
 
-const iconSets = [[Home, Heart, Plane, "theme-toggle"]];
+const iconSets = [[Home, Heart, Plane, "auth-toggle", "theme-toggle"]];
 
 export function DynamicIsland({ className = "" }: DynamicIslandProps) {
   const [currentIconSet, setCurrentIconSet] = useState(0);
   const router = useRouter();
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
+  const isAuthenticated = useAtomValue(isAuthenticatedAtom);
+  const setAuth = useSetAtom(syncAuthCookieAtom);
 
   const shouldHideIsland =
     pathname?.includes("/login") || pathname?.startsWith("/login");
@@ -30,6 +34,7 @@ export function DynamicIsland({ className = "" }: DynamicIslandProps) {
     if (Icon === Home && pathname === "/") return true;
     if (Icon === Heart && pathname === "/favorites") return true;
     if (Icon === Plane && pathname?.startsWith("/country")) return true;
+    if (Icon === "auth-toggle" && isAuthenticated) return true;
     return false;
   };
 
@@ -41,6 +46,12 @@ export function DynamicIsland({ className = "" }: DynamicIslandProps) {
     } else if (Icon === Plane) {
       const randomCountryCode = getRandomCountryCode();
       router.push(`/country/${randomCountryCode}`);
+    } else if (Icon === "auth-toggle") {
+      if (isAuthenticated) {
+        setAuth(false);
+      } else {
+        router.push("/login");
+      }
     } else if (Icon === "theme-toggle") {
       setTheme(theme === "light" ? "dark" : "light");
     } else {
@@ -50,6 +61,10 @@ export function DynamicIsland({ className = "" }: DynamicIslandProps) {
 
   const getThemeIcon = () => {
     return theme === "light" ? Moon : Sun;
+  };
+
+  const getAuthIcon = () => {
+    return isAuthenticated ? Unlock : Lock;
   };
 
   const currentIcons = iconSets[currentIconSet];
@@ -79,7 +94,11 @@ export function DynamicIsland({ className = "" }: DynamicIslandProps) {
         <div className="flex flex-row items-center justify-center gap-2 md:gap-4">
           {currentIcons.map((Icon, index) => {
             const IconComponent =
-              Icon === "theme-toggle" ? getThemeIcon() : Icon;
+              Icon === "theme-toggle"
+                ? getThemeIcon()
+                : Icon === "auth-toggle"
+                ? getAuthIcon()
+                : Icon;
             return (
               <button
                 key={`${currentIconSet}-${index}`}
