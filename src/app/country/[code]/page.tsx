@@ -34,7 +34,7 @@ export default async function CountryPage({ params }: Props) {
             href="/"
             className="inline-block mt-4 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
-            ← Back to Countries
+            Go Home
           </Link>
         </div>
       </div>
