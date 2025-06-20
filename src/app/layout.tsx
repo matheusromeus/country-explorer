@@ -1,13 +1,19 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 import { Toaster } from "sonner";
-import { DynamicIsland } from "@/components/dynamic-island";
+import { DynamicIsland } from "@/components/shared/dynamic-island";
+import { Montserrat } from "next/font/google";
 
 export const metadata: Metadata = {
   title: "Country Explorer",
   description: "Explore countries and their information",
 };
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
 
 export default function RootLayout({
   children,
@@ -16,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`antialiased`}>
+      <body className={`${montserrat.className} antialiased`}>
         <Toaster position="top-right" />
         <ThemeProvider
           attribute="class"

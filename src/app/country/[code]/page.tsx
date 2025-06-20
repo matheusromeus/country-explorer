@@ -9,7 +9,34 @@ type Props = { params: Promise<{ code: string }> };
 
 export default async function CountryPage({ params }: Props) {
   const { code } = await params;
-  const country: CountryDetail = await fetchCountryByCode(code);
+  const country: CountryDetail | null = await fetchCountryByCode(code);
+
+  // Handle case when country data couldn't be fetched
+  if (!country) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-background">
+        <div className="text-center space-y-4">
+          <div className="text-6xl">🌍</div>
+          <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
+            Country Not Found
+          </h1>
+          <p className="text-gray-600 dark:text-gray-300">
+            Sorry, we couldn&apos;t find information for country code &quot;
+            {code}&quot;.
+          </p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            This might be due to a network issue or invalid country code.
+          </p>
+          <Link
+            href="/"
+            className="inline-block mt-4 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            ← Back to Countries
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   let borderCountries: {
     cca2: string;
@@ -21,36 +48,14 @@ export default async function CountryPage({ params }: Props) {
   }
 
   // Extract official native names
-  const nativeNames = country.name.nativeName
+  const nativeNames = country.name?.nativeName
     ? Object.values(country.name.nativeName)
-        .map((name: any) => name.official)
+        .map((name: { official: string; common: string }) => name.official)
         .filter(Boolean)
     : [];
 
   return (
     <div className="min-h-screen relative bg-white dark:bg-background">
-      {/* Dynamic Island Glass Pane Navigation */}
-      {/* <div className=" max-w-4xl absolute top-6 left-1/2 transform -translate-x-1/2 z-50">
-        <nav className="bg-white/20 dark:bg-black/20 backdrop-blur-xl border border-white/20 dark:border-white/10 rounded-full px-6 py-3 shadow-2xl">
-          <div className="flex items-center justify-between space-x-8">
-            <Link
-              href="/"
-              className="flex items-center space-x-2 text-gray-800 dark:text-white hover:text-black dark:hover:text-gray-200 transition-all duration-200 hover:scale-105"
-            >
-              <span className="text-xl">←</span>
-              <span className="font-medium text-sm">Back</span>
-            </Link>
-            <Link
-              href="/favorites"
-              className="flex items-center space-x-2 text-gray-800 dark:text-white hover:text-black dark:hover:text-gray-200 transition-all duration-200 hover:scale-105"
-            >
-              <span className="text-sm">✨</span>
-              <span className="font-medium text-sm">Bucket List</span>
-            </Link>
-          </div>
-        </nav>
-      </div> */}
-
       <div className="max-w-7xl mx-auto px-6 py-24">
         <div className="relative mb-16">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">

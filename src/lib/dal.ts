@@ -21,7 +21,7 @@ export const fetchCountryByCode = cache(async (code: string) => {
     const res = await fetch(
       `https://restcountries.com/v3.1/alpha/${code}?fields=name,flags,population,region,subregion,capital,tld,currencies,languages,borders,cca2`,
       {
-        next: { revalidate: 86400 }, // 1 day
+        next: { revalidate: 86400 },
       }
     );
 
@@ -30,10 +30,11 @@ export const fetchCountryByCode = cache(async (code: string) => {
     }
 
     const data = await res.json();
-    return data;
+
+    return Array.isArray(data) ? data[0] : data;
   } catch (error) {
-    console.error(error);
-    return [];
+    console.error("Error fetching country by code:", error);
+    return null;
   }
 });
 

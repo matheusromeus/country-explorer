@@ -1,4 +1,3 @@
-import LogoutButton from "@/components/buttons/logout";
 import Image from "next/image";
 
 import { Suspense } from "react";
@@ -8,15 +7,10 @@ import Footer from "@/components/dashboard/footer";
 export default async function Home() {
   return (
     <>
-      <div>
-        {/* <div className="flex items-center gap-2 absolute top-0 right-0 p-5 z-50">
-          <LogoutButton />
-        </div> */}
-      </div>
       <div className="relative h-[500px] w-full flex items-center justify-center text-center">
         <Image
           src="/assets/images/home.jpg"
-          alt="minimalist globe"
+          alt="boats in a lake"
           fill
           className="object-cover"
         />

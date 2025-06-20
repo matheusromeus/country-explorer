@@ -3,7 +3,16 @@
 import { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
-import { Home, Plane, Heart, Sun, Moon, Lock, Unlock } from "lucide-react";
+import {
+  Home,
+  Plane,
+  Heart,
+  Sun,
+  Moon,
+  Lock,
+  Unlock,
+  LucideIcon,
+} from "lucide-react";
 import { useAtomValue, useSetAtom } from "jotai";
 import { isAuthenticatedAtom, syncAuthCookieAtom } from "@/atoms/authAtoms";
 import { commonCountryCodes } from "@/lib/constants";
@@ -30,7 +39,7 @@ export function DynamicIsland({ className = "" }: DynamicIslandProps) {
     return commonCountryCodes[randomIndex];
   };
 
-  const isIconActive = (Icon: any) => {
+  const isIconActive = (Icon: LucideIcon | string) => {
     if (Icon === Home && pathname === "/") return true;
     if (Icon === Heart && pathname === "/favorites") return true;
     if (Icon === Plane && pathname?.startsWith("/country")) return true;
@@ -38,7 +47,7 @@ export function DynamicIsland({ className = "" }: DynamicIslandProps) {
     return false;
   };
 
-  const handleIconClick = (index: number, Icon: any) => {
+  const handleIconClick = (Icon: LucideIcon | string) => {
     if (Icon === Heart) {
       router.push("/favorites");
     } else if (Icon === Home) {
@@ -67,6 +76,23 @@ export function DynamicIsland({ className = "" }: DynamicIslandProps) {
     return isAuthenticated ? Unlock : Lock;
   };
 
+  const getIconColor = (Icon: LucideIcon | string) => {
+    if (Icon === Home) return "text-blue-500 hover:text-blue-600";
+    if (Icon === Heart) return "text-red-500 hover:text-red-600";
+    if (Icon === Plane) return "text-teal-500 hover:text-teal-600";
+    if (Icon === "auth-toggle") {
+      return isAuthenticated
+        ? "text-green-500 hover:text-green-600"
+        : "text-orange-500 hover:text-orange-600";
+    }
+    if (Icon === "theme-toggle") {
+      return theme === "light"
+        ? "text-purple-500 hover:text-purple-600"
+        : "text-yellow-500 hover:text-yellow-600";
+    }
+    return "text-primary hover:text-primary/80";
+  };
+
   const currentIcons = iconSets[currentIconSet];
 
   if (shouldHideIsland) {
@@ -88,7 +114,7 @@ export function DynamicIsland({ className = "" }: DynamicIslandProps) {
           dark:before:from-white/10 dark:before:via-white/2 dark:before:to-transparent
           before:backdrop-blur-xl before:-z-10
           transition-transform duration-200 ease-out
-          hover:scale-105
+          hover:scale-110
         `}
       >
         <div className="flex flex-row items-center justify-center gap-2 md:gap-4">
@@ -102,15 +128,19 @@ export function DynamicIsland({ className = "" }: DynamicIslandProps) {
             return (
               <button
                 key={`${currentIconSet}-${index}`}
-                onClick={() => handleIconClick(index, Icon)}
+                onClick={() => handleIconClick(Icon)}
                 className={`
                   p-2 md:p-3 rounded-full
                   ${
                     isIconActive(Icon)
-                      ? "bg-primary/30 border-primary/60 text-primary shadow-lg"
-                      : "bg-primary/10 hover:bg-primary/20 border border-primary/20 hover:border-primary/40 text-primary hover:text-primary/80 shadow-sm hover:shadow-md"
+                      ? `bg-primary/20 border-primary/40 shadow-lg ${getIconColor(
+                          Icon
+                        )}`
+                      : `bg-primary/10 hover:bg-primary/20 border border-primary/20 hover:border-primary/40 shadow-sm hover:shadow-md ${getIconColor(
+                          Icon
+                        )}`
                   }
-                  relative overflow-hidden cursor-pointer
+                  relative overflow-hidden cursor-pointer transition-all duration-200
                 `}
               >
                 <IconComponent size={16} className="md:hidden" />
