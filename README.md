@@ -26,6 +26,12 @@ The app should now be running on http://localhost:3000
 - **Username:** admin
 - **Password:** admin12345
 
+**don't forget to add this to your .env file**
+```
+ADMIN_USERNAME=admin
+PASSWORD=admin12345
+```
+
 ## Design Choices, System Architecture & Folder Structure
 
 - Initialized the project with `pnpm` as the package manager. It is faster than `npm` and uses less disk storage. If needed, `pnpm` provides excellent support for monorepos as well.
